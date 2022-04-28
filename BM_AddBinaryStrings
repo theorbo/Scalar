@@ -1,0 +1,42 @@
+package BitManipulations;
+
+public class AddBinaryStrings {
+
+  public String addBinary(String a, String b) {
+
+    int lenA = a.length();
+    int lenB = b.length();
+
+    StringBuilder strA = new StringBuilder(a);
+    StringBuilder strB = new StringBuilder(b);
+
+    a = strA.reverse().toString();
+    b = strB.reverse().toString();
+    StringBuilder result = new StringBuilder();
+    int sum = 0;
+    int carry = 0;
+
+    for (int i = 0; i < Math.max(lenA, lenB); i++) {
+
+      if (i < lenA && i < lenB) {
+        sum = (carry + a.charAt(i) - 48 + b.charAt(i) - 48) % 2;
+        carry = (carry + a.charAt(i) - 48 + b.charAt(i) - 48) / 2;
+
+      } else if (i < lenA) {
+        sum = (carry + a.charAt(i) - 48) % 2;
+        carry = (carry + a.charAt(i) - 48) / 2;
+
+      } else {
+        sum = (carry + b.charAt(i) - 48) % 2;
+        carry = (carry + b.charAt(i) - 48) / 2;
+      }
+      result.append(sum);
+    }
+
+    if (carry == 1) {
+      result.append(carry);
+    }
+    return result.reverse().toString();
+
+  }
+}
