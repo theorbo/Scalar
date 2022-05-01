@@ -1,0 +1,57 @@
+/* Given an array of integers, A of length N, find out the maximum sum sub-array of non negative numbers from A.
+
+The sub-array should be contiguous i.e., a sub-array created by choosing the second and fourth element and skipping the third element is invalid.
+
+Maximum sub-array is defined in terms of the sum of the elements in the sub-array.
+
+Find and return the required subarray.
+
+*/
+
+public class Solution {
+    public int[] maxset(int[] A) {
+            long currSum = 0;
+    long maxSum = Long.MIN_VALUE;
+    int start = 0;
+    int end = 0;
+    int maxStart = -1;
+    int maxEnd = -1;
+
+    int i = 0;
+    int n = A.length;
+    while (i < n) {
+      if (A[i] >= 0) {
+        start = i;
+        end = i;
+        currSum = A[i];
+        i++;
+        while (i < n && A[i] >= 0) {
+          currSum += A[i];
+          end = i;
+          i++;
+        }
+        if (currSum > maxSum) {
+          maxSum = currSum;
+          maxStart = start;
+          maxEnd = end;
+        }
+        i = end + 1;
+      } else {
+        i++;
+      }
+
+
+    }
+
+    int[] result = new int[maxEnd - maxStart + 1];
+    int k = 0;
+    if (maxStart == -1) {
+      return new int[0];
+    }
+    for (i = maxStart; i <= maxEnd; i++) {
+      result[k++] = A[i];
+    }
+
+    return result;
+    }
+}
