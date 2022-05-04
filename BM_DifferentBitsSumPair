@@ -1,0 +1,63 @@
+/* We define f(X, Y) as the number of different corresponding bits in the binary representation of X and Y.
+For example, f(2, 7) = 2, since the binary representation of 2 and 7 are 010 and 111, respectively. The first and the third bit differ, so f(2, 7) = 2.
+You are given an array of N positive integers, A1, A2,..., AN. Find sum of f(Ai, Aj) for all pairs (i, j) such that 1 ≤ i, j ≤ N. Return the answer modulo 109+7.
+
+Approach : in this question you are taking O(n*n)
+
+time complexity
+
+try to do it in O(n)
+
+if you can create an frequency array to store the frequency of number having ith bit set
+
+then you can use permutation to get the answer
+
+take example A =[3,4,2,6]
+
+no of element with 0th bit set = 1 {3 only}
+
+no elements with 1st bit set = 3 {3,2,6}
+
+no of elements with 2nd bit set = 2 {4,6}
+
+if you calculate the difference in bit between two number at 0th position it would be
+
+no of element with 0th bit set * no of element with 0th bit unset * 2(for permutiatoin)
+
+1 * 3* 2 = 6
+
+same for 1st,2nd bit
+
+1st bit -- 3*1*2 = 6
+
+2nd bit -- 2*2*2 = 8
+
+so answer become 6+6+8
+
+
+*/
+
+public class Solution {
+    public int cntBits(int[] A) {
+
+        int MOD = 1000000007;
+        long sum = 0;
+        int n = A.length;
+
+        int[] numberOne = new int[31];
+
+        for(int i = 0; i <= 30; i++){
+            for(int j = 0; j < n; j++){
+                if(((1<<i) & A[j]) > 0){
+                    numberOne[i] += 1;
+                }
+            }
+        }
+
+        for(int i = 0; i <= 30; i++){
+            sum = (sum + ((long)(n-numberOne[i])*(long)numberOne[i])%MOD)%MOD;
+        }
+        return (int)(sum*2)%MOD;
+    }
+
+}
