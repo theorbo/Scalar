@@ -1,0 +1,36 @@
+/* Given an integer array A of size N. You have to delete one element such that the GCD(Greatest common divisor) of the remaining array is maximum.
+
+Find the maximum value of GCD. */
+
+public class Solution {
+    public int solve(int[] A) {
+
+        int n = A.length;
+        int[] prefixGCD = new int[n];
+
+        int g = 0;
+        for(int i = 0 ; i < n; i++){
+            prefixGCD[i] = gcd(g, A[i]);
+            g = prefixGCD[i]; 
+        }
+
+        int maxGCD = prefixGCD[n-2];
+        int suffixGCD = A[n-1];
+
+        for(int i = n-2; i >= 1; i--){
+
+            int gcdAfterRemoval = gcd(prefixGCD[i-1], suffixGCD);
+            maxGCD = Math.max(maxGCD, gcdAfterRemoval);
+            suffixGCD = gcd(suffixGCD, A[i]);     
+        }
+        maxGCD = Math.max(maxGCD, suffixGCD);
+        return maxGCD;
+    }
+
+    private int gcd(int a, int b){
+        if(b == 0)
+            return a;
+        return gcd(b, a%b);    
+    }
+
+}
