@@ -1,0 +1,44 @@
+/* Given an even number A ( greater than 2 ), return two prime numbers whose sum will be equal to the given number.
+
+If there is more than one solution possible, return the lexicographically smaller solution.
+
+If [a, b] is one solution with a <= b, and [c,d] is another solution with c <= d, then 
+[a, b] < [c, d], If a < c OR a==c AND b < d. 
+NOTE: A solution will always exist. Read Goldbach's conjecture. 
+
+use int[] array instead of boolean to store true/false
+*/
+
+public class Solution {
+    public int[] primesum(int A) {
+
+        //construct spf(sieve of eratothenes)
+        //use int[] array instead of boolean to store true/false
+        int[] spf = new int[A+1];
+        int i, j;
+        for(i = 2; i <= A; i++){
+            spf[i] = 1;
+        }
+
+        for(i = 2; i * i <= A; i++){
+            if(spf[i] == 1){
+                for(j = i*i; j <= A; j+=i){
+                    spf[j] = 0;
+                }
+            }
+        }
+        int[] result = new int[2];
+        for(i = 2; i <= A/2; i++){
+
+            if(spf[i] == 1 && spf[A-i] == 1){
+                result[0] = i;
+                result[1] = A-i;
+                break;
+            }
+        }
+        return result;
+    }
+
+
+}
+
