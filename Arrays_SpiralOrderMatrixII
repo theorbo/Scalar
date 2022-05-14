@@ -1,0 +1,37 @@
+/* Given an integer A, generate a square matrix filled with elements from 1 to A2 in spiral order. */
+
+public class Solution {
+    public int[][] generateMatrix(int A) {
+
+    int m = A;
+
+    int[][] result = new int[m][m];
+    int left = 0, right = m-1, top = 0, bottom = m-1;
+    int i, j , k ,l;
+    int num = 1;
+    
+    while(left <= right && top <= bottom){
+      
+      for(i = left; i <= right; i++){
+        result[top][i] = num++;
+      }
+      top++;
+      
+      for(j = top; j <= bottom; j++){
+        result[j][right] = num++;
+      }
+      right--;
+      
+      for(k = right; k >= left;k--){
+        result[bottom][k] = num++;
+      }
+      bottom--;
+      
+      for(l = bottom; l >= top; l--){
+        result[l][left] = num++;
+      }
+      left++;
+    }
+    return result;
+    }
+}
