@@ -1,0 +1,40 @@
+/* Given an array of integers A and an integer B, find and return the minimum number of swaps required to bring all the numbers less than or equal to B together.
+
+Note: It is possible to swap any two elements, not necessarily consecutive. */
+
+public class Solution {
+    public int solve(int[] A, int B) {
+
+        int windowSize = 0;
+        int i, n = A.length;
+        for(i = 0; i < n; i++){
+            if(A[i] <= B)
+                windowSize++;
+        }
+
+        int start = 0, count = windowSize;
+        for (i = start; i < windowSize; i++){
+            if(A[i] > B){
+                count--;
+            }
+        }
+        start += 1;
+        int end = Math.min(n-1,windowSize);
+
+        int maxCount = count;
+
+        while(start < n && end < n){
+            if(A[start-1] <= B){
+                count--;
+            } 
+            if(A[end] <=B){
+                count++;
+            }   
+            maxCount = Math.max(maxCount, count);
+            start++;
+            end++;
+        }
+
+        return windowSize-maxCount;
+    }
+}
