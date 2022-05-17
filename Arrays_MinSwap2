@@ -1,0 +1,33 @@
+/* Given an array of integers A of size N that is a permutation of [0, 1, 2, ..., (N-1)]. It is allowed to swap any two elements (not necessarily consecutive).
+
+Find the minimum number of swaps required to sort the array in ascending order.
+*/
+
+public class Solution {
+    public int solve(int[] A) {
+
+        int low = 0;
+        int n = A.length;
+        int count = 0;
+
+        while(low < n){
+            if(A[low] == low){
+                low++;
+            }
+                
+            else{
+            //swap
+            int temp = A[low];
+            int temp1 = A[A[low]];
+
+            A[temp] = temp;
+            A[low] = temp1;
+
+            count++;
+            }
+            
+        }
+        return count;
+
+    }
+}
