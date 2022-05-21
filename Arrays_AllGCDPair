@@ -1,0 +1,48 @@
+/* Given an array of integers A of size N containing GCD of every possible pair of elements of another array.
+
+Find and return the original numbers used to calculate the GCD array in any order. For example, if original numbers are {2, 8, 10} then the given array will be {2, 2, 2, 2, 8, 2, 2, 2, 10}.
+*/
+
+/* LOGIC
+
+find the maximum element, suppose it's X1 now that will definately be the answer, why? think.
+
+now remove that element from array, find the current max element, let say X2, now X2 will also be int the answer but this time you have to remove X2 as well as the two other values which are gcd(X2, X1) and gcd(X1, X2).
+
+again find the current maximum , let say X3, it will be also in the answer but now you have to remove X3 from array as well as 4 other values, can you guess ?
+
+these are gcd(X3, X2), gcd(X2, X3), gcd(X3, X1) and gcd(X1, X3).
+
+repeat this process untill no elements left in the array.
+
+Final array of X1, X2, X3... will be the answer.
+
+hope this helps. let me know if you are stuck.
+*/
+
+
+public class Solution {
+    public ArrayList<Integer> solve(ArrayList<Integer> A) {
+
+        Collections.sort(A);
+        ArrayList<Integer> result = new ArrayList<>();
+
+        while(A.size() > 0){
+            int ele = A.remove(A.size()-1);
+            for(int i = 0; i < result.size(); i++){
+                int gcd = gcd(result.get(i), ele);
+                A.remove(Integer.valueOf(gcd));
+                A.remove(Integer.valueOf(gcd));
+            }
+
+            result.add(ele);
+        }
+        return result;
+    }
+
+    private int gcd(int a, int b){
+        if(b == 0)
+            return a;
+        return gcd(b, a%b);    
+    }
+}
