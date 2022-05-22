@@ -1,0 +1,34 @@
+/* Given an array A of non-negative integers, arrange them such that they form the largest number.
+
+Note: The result may be very large, so you need to return a string instead of an integer.
+Comparator logic is good.
+
+*/
+
+public class Solution {
+    // DO NOT MODIFY THE LIST. IT IS READ ONLY
+    public String largestNumber(final List<Integer> A) {
+          List<Integer> Acopy = new ArrayList<>(A);
+
+    Collections.sort(Acopy, (a, b) -> {
+      String s1 = String.valueOf(a) + b;
+      String s2 = String.valueOf(b) + a;
+
+      if (s1.compareTo(s2) >= 0) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
+    StringBuilder str = new StringBuilder();
+
+    for (int i = 0; i < A.size(); i++) {
+      str.append(Acopy.get(i));
+    }
+    if(str.charAt(0) == '0'){
+      return "0";
+    }
+    return str.toString();
+    }
+}
