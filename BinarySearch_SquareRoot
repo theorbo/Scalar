@@ -1,0 +1,35 @@
+/* Given an integer A.
+
+Compute and return the square root of A.
+
+If A is not a perfect square, return floor(sqrt(A)).
+
+DO NOT USE SQRT FUNCTION FROM THE STANDARD LIBRARY.
+
+NOTE: Do not use the sqrt function from the standard library. Users are expected to solve this in O(log(A)) time. */
+
+public class Solution {
+    public int sqrt(int A) {
+        return getSqrt(A);
+    }
+
+    private int getSqrt(int A){
+
+        long low = 1, high = A;
+        long ans = 0;
+
+        while(low <= high){
+            long mid = low+(high-low)/2;
+            if(mid * mid == A)
+                return (int)mid;
+            else if(mid * mid < A){
+                ans = mid;
+                low = mid+1;
+            }
+            else{
+                high = mid - 1;
+            }
+        }
+        return (int)ans;
+    }
+}
