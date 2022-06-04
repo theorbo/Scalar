@@ -1,0 +1,25 @@
+/* Given a sorted array of distinct integers A and an integer B, 
+find and return how many pair of integers ( A[i], A[j] ) such that i != j have sum equal to B.
+*/
+
+public class Solution {
+    public int solve(int[] A, int B) {
+        int n = A.length-1;
+        int i = 0, j = n;
+        int count = 0;
+
+        while(i < j){
+            if(A[i] + A[j] == B){
+                count++;
+                i++;
+                j--;
+            } else if(A[i] + A[j] > B){
+                j--;
+            } else{
+                i++;
+            }
+        }
+        return count;
+
+    }
+}
