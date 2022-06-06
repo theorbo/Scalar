@@ -1,0 +1,36 @@
+/* Given an one-dimensional integer array A of size N and an integer B.
+
+Count all distinct pairs with difference equal to B.
+
+Here a pair is defined as an integer pair (x, y), where x and y are both numbers in the array and their absolute difference is B.
+
+*/
+
+public class Solution {
+    public int solve(int[] A, int B) {
+
+        int i = 0, j = 1, count = 0;
+        int n = A.length;
+        Arrays.sort(A);
+        HashSet<String> hashSet = new HashSet<>();
+
+        while(j < n){
+           int diff = A[j] - A[i];
+           if(diff < B)
+            j++;
+           else if(diff > B)
+            i++;
+            else {
+                if(i!=j){
+                    hashSet.add(A[i]+A[j]+"");
+                    i++;
+                    j++;
+                } else{
+                    j++;
+                }
+                
+            }     
+        }
+        return hashSet.size();
+    }
+}
