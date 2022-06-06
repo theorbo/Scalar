@@ -1,0 +1,59 @@
+/* Given an array of positive integers A and an integer B, find and return first continuous subarray which adds to B.
+
+If the answer does not exist return an array with a single element "-1".
+
+First sub-array means the sub-array for which starting index in minimum.
+
+*/
+
+public class Solution {
+    public int[] solve(int[] A, int B) {
+
+        int[] result;
+        int currSum = 0;
+        int i = 0, j = 0;
+        int n = A.length;
+        while(j < n){
+            //currSum += A[j];
+            if(currSum == B){
+                result = new int[j-i];
+                int k = 0;
+                int no = j-i;
+                while(k < no){
+                    result[k] = A[i];
+                    i++;
+                    k++;
+                }
+                return result;
+            }
+            if(currSum < B){
+                currSum += A[j];
+                j++;
+            } if(currSum > B){
+                currSum -= A[i];
+                i++;
+                //j++;
+            }
+        }
+        // if sum >B
+        while(i < n && currSum >= B){
+            
+            if(currSum == B){
+                result = new int[j-i];
+                int k = 0;
+                int no = j-i;
+                while(k < no){
+                    result[k] = A[i];
+                    i++;
+                    k++;
+                }
+                return result;
+            }
+            currSum -= A[i];
+            i++;
+        }
+        int[] res = new int[1];
+        res[0] = -1;
+        return res;
+    }
+}
