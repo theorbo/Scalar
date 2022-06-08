@@ -1,0 +1,49 @@
+/* Given an array A of N integers, are there elements a, b, c in S such that a + b + c = 0
+
+Find all unique triplets in the array which gives the sum of zero.
+
+Note:
+
+Elements in a triplet (a,b,c) must be in non-descending order. (ie, a ≤ b ≤ c) The solution set must not contain duplicate triplets.*/
+
+public class Solution {
+    ArrayList<ArrayList<Integer>> result1;
+    Set<ArrayList<Integer>> result;
+    public ArrayList<ArrayList<Integer>> threeSum(ArrayList<Integer> A) {
+        result = new LinkedHashSet<>();
+        int n = A.size();
+        if(n < 3){
+            result1 = new ArrayList<>();
+            return result1;
+        }
+            
+        Collections.sort(A);    
+        for(int i = 0; i < n-2; i++){
+            getThreeSum(A, i+1, n-1, A.get(i));
+        }
+        result1 = new ArrayList<>(result);
+        return result1;
+    }
+
+    private void getThreeSum(ArrayList<Integer> A, int start, int end, int val){
+
+        int i, j;
+        while(start < end){
+
+            if(A.get(start) + A.get(end) == -val){
+                ArrayList<Integer> temp = new ArrayList<>();
+                temp.add(val);
+                temp.add(A.get(start));
+                temp.add(A.get(end));
+                result.add(temp);
+                start++;
+                end--;
+            }
+            else if(A.get(start) + A.get(end) > -val){
+                end--;
+            }else{
+                start++;
+            }
+        }
+    }
+}
