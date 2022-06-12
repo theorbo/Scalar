@@ -1,0 +1,31 @@
+/* Given a string B, find if it is possible to re-order the characters of the string B so that it can be represented as a concatenation of A similar strings.
+
+Eg: B = aabb and A = 2, then it is possible to re-arrange the string as "abab" which is a concatenation of 2 similar strings "ab".
+
+If it is possible, return 1, else return -1. */
+
+public class Solution {
+    public int solve(int A, String B) {
+
+    int n = B.length();
+    Map<Character, Integer> mp = new HashMap<>();
+
+    for(int i = 0; i < n; i++){
+      char b = B.charAt(i);
+      if(mp.containsKey(b)){
+        int val = mp.get(b);
+        mp.put(b, val+1);
+      }else{
+        mp.put(b, 1);
+      }
+    }
+
+    for(Map.Entry<Character, Integer> entry : mp.entrySet()){
+      int val = entry.getValue();
+      if(val % A != 0){
+        return -1;
+      }
+    }
+    return 1;
+    }
+}
