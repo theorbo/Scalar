@@ -1,0 +1,36 @@
+/* Given a string A, find the length of the longest substring without repeating characters.
+
+Note: Users are expected to solve in O(N) time complexity.*/
+
+
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+
+       int n = s.length();
+
+    Map<Character, Integer> mp = new HashMap<>();
+    int maxCount = 0;
+    int count = 0;
+    int pos = -1;
+    for(int i = 0; i < n; i++){
+      char b = s.charAt(i);
+      if(!mp.containsKey(b)){
+        mp.put(b, i);
+        count++;
+      } else {
+        int val = mp.get(b);
+        if(val < pos){
+          mp.put(b, i);
+          count++;
+        }else{
+          pos = val;
+          count = count - (val);
+          maxCount = Math.max(maxCount, count);
+          mp.put(b, i);
+        }
+      }
+    }
+    return Math.max(maxCount, count);
+
+    }
+}
