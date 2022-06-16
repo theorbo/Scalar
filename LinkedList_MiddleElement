@@ -1,0 +1,28 @@
+/* Given a linked list of integers, find and return the middle element of the linked list.
+
+NOTE: If there are N nodes in the linked list and N is even then return the (N/2 + 1)th element.*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     ListNode(int x) { val = x; next = null; }
+ * }
+ */
+public class Solution {
+    public int solve(ListNode A) {
+
+        if(A == null|| A.next == null)
+            return A.val;
+
+        ListNode slowptr = A;
+        ListNode fastptr = A;
+
+        while(fastptr != null && fastptr.next != null){
+            fastptr = fastptr.next.next;
+            slowptr = slowptr.next;
+        }   
+        return slowptr.val; 
+    }
+}
