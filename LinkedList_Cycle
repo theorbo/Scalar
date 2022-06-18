@@ -1,0 +1,40 @@
+/* Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+Try solving it using constant additional space. */
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     ListNode(int x) { val = x; next = null; }
+ * }
+ */
+public class Solution {
+	public ListNode detectCycle(ListNode a) {
+
+        ListNode slowptr = a;
+        ListNode fastptr = a;
+        boolean isDetected = false;
+
+        while(fastptr != null && fastptr.next != null){
+            slowptr = slowptr.next;
+            fastptr = fastptr.next.next;
+            if(slowptr == fastptr){
+                isDetected = true;
+                break;
+            }
+        }
+
+        if(isDetected) {
+            ListNode temp = a;
+            while(temp != slowptr){
+                temp = temp.next;
+                slowptr = slowptr.next;
+            }
+            return slowptr;
+        }
+            
+        return null;    
+	}
+}
