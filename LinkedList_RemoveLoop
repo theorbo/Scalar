@@ -1,0 +1,34 @@
+/* You are given a linked list that contains a loop.
+You need to find the node, which creates a loop and break it by making the node point to NULL. */
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     ListNode(int x) { val = x; next = null; }
+ * }
+ */
+public class Solution {
+    public ListNode solve(ListNode A) {
+      ListNode root = A;
+      ListNode slowPtr = A;
+      ListNode fastPtr = A;
+      ListNode prevPtr = A;
+      while (fastPtr != null && fastPtr.next != null) {
+        slowPtr = slowPtr.next;
+        fastPtr = fastPtr.next.next;
+        if(slowPtr ==  fastPtr)
+          break;
+      }
+
+      ListNode temp = A;
+      while (temp != slowPtr) {
+        prevPtr = slowPtr;
+        slowPtr = slowPtr.next;
+        temp = temp.next;
+      }
+      prevPtr.next = null;
+      return root;
+    }
+}
