@@ -1,0 +1,43 @@
+/* Given an array of integers A and an integer B, 
+find and return the maximum value K such that there is no subarray in A of size K with the sum of elements greater than B.
+*/
+
+public class Solution {
+    public int solve(int[] A, int B) {
+        return binarySearch(A, B);
+    }
+
+    private int binarySearch(int[] A, int B){
+
+        int low = 1, high = A.length; 
+        long ans = 0;
+        while(low <= high){
+            int mid = (low + high)/2;
+            long val = getMaximumSubArraySumoflengthK(A, mid);
+            if(val <= B){
+                ans = mid;
+                low = mid+1;
+            }else{
+                high = mid-1;
+            }
+
+        }
+        return (int)ans;
+    }
+
+    private long getMaximumSubArraySumoflengthK(int[] A, int k){
+
+        long maxSum = 0;
+        long n = A.length-1;
+        int i;
+        for(i =0; i < k; i++){
+            maxSum += A[i];
+        }
+        long current_sum = maxSum;    
+        for( i = k; i <= n; i++){
+            current_sum = current_sum - A[i-k] + A[i];
+            maxSum = Math.max(current_sum, maxSum); 
+        }
+        return maxSum;
+    }
+}
