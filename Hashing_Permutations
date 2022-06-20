@@ -1,0 +1,47 @@
+/* You are given two strings, A and B, of size N and M, respectively.
+
+You have to find the count of all permutations of A present in B as a substring. You can assume a string will have only lowercase letters.*/
+
+public class Solution {
+    public int solve(String A, String B) {
+
+    int[] alphabets = new int[26];
+    int[] trialAlphabets = new int[26];
+    int noOfAlphabets = A.length();
+    for (int i = 0; i < noOfAlphabets; i++) {
+      char b = A.charAt(i);
+      alphabets[b - 97] += 1;
+    }
+
+    int count = 0;
+    for (int i = 0; i < noOfAlphabets; i++) {
+      char b = B.charAt(i);
+      trialAlphabets[b - 97] += 1;
+      if (isEqual(alphabets, trialAlphabets)) {
+        count++;
+      }
+    }
+
+    for (int i = noOfAlphabets; i < B.length(); i++) {
+      char b = B.charAt(i);
+      char c = B.charAt(i - noOfAlphabets);
+      trialAlphabets[b - 97] += 1;
+      trialAlphabets[c - 97] -= 1;
+      if (isEqual(alphabets, trialAlphabets)) {
+        count++;
+      }
+    }
+
+    return count;
+
+  }
+
+  private boolean isEqual(int[] alphabets, int[] trialAlphabets) {
+    for (int i = 0; i < 26; i++) {
+      if (alphabets[i] != trialAlphabets[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+}
