@@ -1,0 +1,41 @@
+/* An arithmetic expression is given by a character array A of size N. Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+Valid operators are +, -, *, /. Each character may be an integer or an operator.
+*/
+
+public class Solution {
+    public int evalRPN(String[] A) {
+       int n = A.length;
+    String plus = "+";
+    String minus = "-";
+    String multiply = "*";
+    String divide = "/";
+
+    Stack<Integer> stack = new Stack();
+
+    for(int i = 0; i < n; i++){
+      String s = A[i];
+      if(stack.size() >= 2 &&( s.equals(plus)|| s.equals(minus) || s.equals(multiply) || s.equals(divide))){
+        int second= stack.pop();
+        int first= stack.pop();
+
+        if(s.equals(plus))
+          stack.push(first+second);
+
+        if(s.equals(minus))
+          stack.push(first - second);
+
+        if(s.equals(multiply))
+          stack.push(first * second);
+
+        if(s.equals(divide))
+          stack.push(first/second);
+
+      }
+      else {
+        stack.push(Integer.parseInt(s));
+      }
+    }
+    return stack.pop();
+    }
+}
