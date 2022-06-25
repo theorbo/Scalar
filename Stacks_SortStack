@@ -1,0 +1,69 @@
+/* Given a stack of integers A, sort it using another stack.
+
+Return the array of integers after sorting the stack using another stack.*/
+
+public class Solution {
+    public int[] solve(int[] A) {
+           int n = A.length;
+    Stack<Integer> stack = new Stack<>();
+    for(int i = 0; i < n ; i++){
+      stack.push(A[i]);
+    }
+    Stack<Integer> mergedStack = mergeSort(stack);
+    int k = mergedStack.size()-1;
+    int[] result = new int[mergedStack.size()];
+    while(!mergedStack.isEmpty()){
+      result[k--] = mergedStack.pop();
+    }
+    return result;
+  }
+
+  private Stack<Integer> mergeSort(Stack<Integer> stack1){
+    int n = stack1.size();
+    if(stack1.isEmpty() || n == 1)
+      return stack1;
+    Stack<Integer> stack2 = new Stack<>();
+    for(int i = 0; i < n/2; i++){
+      stack2.push(stack1.pop());
+    }
+    stack1 = mergeSort(stack1);
+    stack2 = mergeSort(stack2);
+    return merge(stack1, stack2);
+  }
+
+  private Stack<Integer> merge(Stack<Integer> stack1, Stack<Integer> stack2) {
+
+    if(stack1.isEmpty())
+      return stack2;
+
+    if(stack2.isEmpty())
+      return stack1;
+
+    Stack<Integer> result = new Stack<>();
+
+    while(!stack1.isEmpty() && !stack2.isEmpty()){
+      int first = stack1.peek();
+      int second = stack2.peek();
+      if(first > second){
+        result.push(stack1.pop());
+      } else{
+        result.push(stack2.pop());
+      }
+    }
+
+    while (!stack1.isEmpty()){
+      result.push(stack1.pop());
+    }
+
+    while(!stack2.isEmpty()){
+      result.push(stack2.pop());
+    }
+
+   Stack<Integer> result1 = new Stack<>();
+   while(!result.isEmpty()){
+     result1.push(result.pop());
+   }
+    return result1;
+  
+    }
+}
