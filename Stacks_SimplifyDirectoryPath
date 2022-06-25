@@ -1,0 +1,40 @@
+/* Given a string A representing an absolute path for a file (Unix-style).
+
+Return the string A after simplifying the absolute path.*/
+
+public class Solution {
+    public String simplifyPath(String A) {
+    StringBuilder output = new StringBuilder();
+
+    String[] tokens =
+        Arrays.stream(A.split("/")).map(String::trim).filter(strr -> strr.length() > 0).toArray(String[]::new);
+
+    Stack<String> directory = new Stack<>();
+    for (String token : tokens) {
+      if (isFolderName(token)) {
+        directory.push(token);
+      } else {
+        if (directory.isEmpty()) {
+          continue;
+        }
+        if (token.equals("..")) {
+          directory.pop();
+        }
+      }
+    }
+
+    if (directory.isEmpty()) {
+      return "/";
+    }
+
+
+    while (!directory.isEmpty()) {
+      output.insert(0, "/" + directory.pop());
+    }
+    return output.toString();
+  }
+
+  private boolean isFolderName(String token) {
+    return !token.equals(".") && !token.equals("..") && !token.contains("/");
+  }
+}
