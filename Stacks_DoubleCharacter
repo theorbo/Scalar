@@ -1,0 +1,35 @@
+/* You are given a string A.
+
+An operation on the string is defined as follows:
+
+Remove the first occurrence of the same consecutive characters. eg for a string "abbcd", the first occurrence of same consecutive characters is "bb".
+
+Therefore the string after this operation will be "acd".
+
+Keep performing this operation on the string until there are no more occurrences of the same consecutive characters and return the final string.
+
+*/
+
+public class Solution {
+    public String solve(String A) {
+        int n = A.length();
+    Stack<Character> stack = new Stack<>();
+
+    int i;
+    for (i = 0; i < n; i++) {
+      char b = A.charAt(i);
+      if (!stack.isEmpty() && stack.peek() == b) {
+        stack.pop();
+      } else{
+        stack.push(b);
+      }
+    }
+
+    StringBuilder str = new StringBuilder();
+    while (!stack.isEmpty()) {
+      str.append(stack.pop());
+    }
+    str.reverse();
+    return str.toString();
+    }
+}
