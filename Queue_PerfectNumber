@@ -1,0 +1,28 @@
+/* Given an integer A, you have to find the Ath Perfect Number.
+
+A Perfect Number has the following properties:
+
+It comprises only 1 and 2.
+
+The number of digits in a Perfect number is even.
+
+It is a palindrome number.*/
+
+public class Solution {
+    public String solve(int A) {
+          Queue<String> queue = new LinkedList<>();
+    queue.add("11");
+    queue.add("22");
+    int count = 2;
+    while (count <= A) {
+      String temp = queue.poll();
+      int len = temp.length();
+      String first = temp.substring(0, len / 2);
+      String second = temp.substring(len / 2);
+      queue.add(first + "11" + second);
+      queue.add(first + "22" + second);
+      count++;
+    }
+    return queue.poll();
+    }
+}
