@@ -1,0 +1,40 @@
+/* You are given a binary tree represented by root A.
+
+Assume a BST is defined as follows:
+
+1) The left subtree of a node contains only nodes with keys less than the node's key.
+
+2) The right subtree of a node contains only nodes with keys greater than the node's key.
+
+3) Both the left and right subtrees must also be binary search trees.*/
+
+/**
+ * Definition for binary tree
+ * class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) {
+ *      val = x;
+ *      left=null;
+ *      right=null;
+ *     }
+ * }
+ */
+public class Solution {
+ public int isValidBST(TreeNode A) {
+    return validBST(A, Integer.MIN_VALUE, Integer.MAX_VALUE) ? 1 : 0;
+
+  }
+
+  private boolean validBST(TreeNode A, int min, int max) {
+    if (A == null) {
+      return true;
+    }
+    if (A.val < min || A.val > max) {
+      return false;
+    }
+
+    return validBST(A.left, min, A.val - 1) && validBST(A.right, A.val + 1, max);
+  }
+}
