@@ -1,0 +1,37 @@
+/* Given a binary tree A, invert the binary tree and return it.
+
+Inverting refers to making the left child the right child and vice versa.*/
+
+
+/**
+ * Definition for binary tree
+ * class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) {
+ *      val = x;
+ *      left=null;
+ *      right=null;
+ *     }
+ * }
+ */
+public class Solution {
+    public TreeNode invertTree(TreeNode A) {
+        Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(A);
+    
+    while (!queue.isEmpty()){
+      TreeNode node = queue.poll();
+      TreeNode temp = null;
+      temp = node.left;
+      node.left = node.right;
+      node.right = temp;
+      if(node.left != null)
+      queue.add(node.left);
+      if(node.right != null)
+      queue.add(node.right);
+    }
+    return A;
+    }
+}
