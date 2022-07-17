@@ -1,0 +1,69 @@
+/* Given a list of N words, find the shortest unique prefix to represent each word in the list. */
+
+public class Solution {
+    public String[] prefix(String[] A) {
+
+    int n = A.length;
+    String[] result = new String[n];
+
+    TrieNode rootNode = constructTrie(A);
+
+    for (int i = 0; i < n; i++) {
+      result[i] = getPrefix(rootNode, A[i]);
+    }
+    return result;
+
+  }
+
+  private String getPrefix(TrieNode root, String S) {
+    StringBuilder prefix = new StringBuilder();
+    for (int i = 0; i < S.length(); i++) {
+      //required node
+      TrieNode current = root.child.get(S.charAt(i));
+      prefix.append(S.charAt(i));
+      if (current.count == 1) {
+        break;
+      }
+      root = current;
+    }
+    return prefix.toString();
+  }
+
+  private TrieNode constructTrie(String[] A) {
+
+    TrieNode dummyNode = new TrieNode(new HashMap<>(), 0);
+    int len = A.length;
+    for (int i = 0; i < len; i++) {
+      insert(dummyNode, A[i]);
+    }
+    return dummyNode;
+
+  }
+
+  private void insert(TrieNode root, String s) {
+    TrieNode current = root;
+    int len = s.length();
+    for (int i = 0; i < len; i++) {
+      char b = s.charAt(i);
+      if (!current.child.containsKey(b)) {
+        current.child.put(b, new TrieNode(new HashMap<>(), 1));
+      } else {
+        TrieNode childNode = current.child.get(b);
+        childNode.count += 1;
+      }
+      current = current.child.get(b);
+    }
+  }
+
+  class TrieNode {
+    Map<Character, TrieNode> child;
+    int count;
+
+    public TrieNode(Map<Character, TrieNode> child, int count) {
+      this.child = child;
+      this.count = count;
+    }
+  }
+
+    
+}
