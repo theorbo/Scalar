@@ -10,9 +10,17 @@ public class Solution {
     int n = A.length;
     int[] NSL = getNSL(A);
     int[] NSR = getNSR(A);
-    int maxArea = A[0];
+    int maxArea = 0;
     for (int i = 0; i < n; i++) {
-      int area = A[i] * (NSR[i] - NSL[i] - 1);
+      int p1 = 0;
+      int p2 = n - 1;
+      if (NSL[i] != -1) {
+        p1 = NSL[i] + 1;
+      }
+      if (NSR[i] != -1) {
+        p2 = NSR[i] - 1;
+      }
+      int area = A[i] * (p2 - p1 + 1);
       maxArea = Math.max(maxArea, area);
     }
     return maxArea;
