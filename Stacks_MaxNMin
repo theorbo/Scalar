@@ -1,0 +1,149 @@
+/* Given an array of integers A.
+
+value of a array = max(array) - min(array).
+
+Calculate and return the sum of values of all possible subarrays of A modulo 109+7.
+
+A = [4, 7, 3, 8]
+value ( [4] ) = 4 - 4 = 0
+value ( [7] ) = 7 - 7 = 0
+value ( [3] ) = 3 - 3 = 0
+value ( [8] ) = 8 - 8 = 0
+value ( [4, 7] ) = 7 - 4 = 3
+value ( [7, 3] ) = 7 - 3 = 4
+value ( [3, 8] ) = 8 - 3 = 5
+value ( [4, 7, 3] ) = 7 - 3 = 4
+value ( [7, 3, 8] ) = 8 - 3 = 5
+value ( [4, 7, 3, 8] ) = 8 - 3 = 5
+sum of values % 10^9+7 = 26
+*/
+
+public class Solution {
+    public int solve(int[] A) {
+       int n = A.length;
+    int MOD = 1000000007;
+    long ans = 0;
+    int[] NGL = getNGL(A);
+    int[] NGR = getNGR(A);
+    int[] NSL = getNSL(A);
+    int[] NSR = getNSR(A);
+    long minContribution = 0;
+    long maxContribution = 0;
+    for (int i = 0; i < n; i++) {
+      int p1 = 0, q1 = 0;
+      int p2 = n - 1, q2 = n - 1;
+      if (NSL[i] != -1) {
+        p1 = NSL[i] + 1;
+      }
+      if (NSR[i] != -1) {
+        p2 = NSR[i] - 1;
+      }
+      if (NGL[i] != -1) {
+        q1 = NGL[i] + 1;
+      }
+      if (NGR[i] != -1) {
+        q2 = NGR[i] - 1;
+      }
+      long prodMin = ((long) (i - p1 + 1) * (p2 - i + 1)) % MOD;
+      minContribution = (minContribution + (prodMin * A[i]) % MOD) % MOD;
+
+      long prodMax = ((long) (i - q1 + 1) * (q2 - i + 1)) % MOD;
+      maxContribution = (maxContribution + (prodMax * A[i]) % MOD) % MOD;
+      
+    }
+    ans = (maxContribution - minContribution) % MOD;
+    if (ans < 0) {
+      ans = (ans + MOD) % MOD;
+    }
+    return (int) (ans % MOD);
+  }
+
+  private int[] getNSL(int[] A) {
+
+    Stack<Integer> CL = new Stack<>();
+    int n = A.length;
+    int[] result = new int[n];
+    for (int i = 0; i < n; i++) {
+
+      while (!CL.isEmpty() && A[CL.peek()] >= A[i]) {
+        CL.pop();
+      }
+
+      if (CL.isEmpty()) {
+        result[i] = -1;
+      } else {
+        result[i] = CL.peek();
+      }
+
+      CL.push(i);
+    }
+    return result;
+  }
+
+  private int[] getNSR(int[] A) {
+
+    Stack<Integer> CL = new Stack<>();
+    int n = A.length;
+    int[] result = new int[n];
+    for (int i = n - 1; i >= 0; i--) {
+
+      while (!CL.isEmpty() && A[CL.peek()] >= A[i]) {
+        CL.pop();
+      }
+
+      if (CL.isEmpty()) {
+        result[i] = -1;
+      } else {
+        result[i] = CL.peek();
+      }
+
+      CL.push(i);
+    }
+    return result;
+  }
+
+  private int[] getNGL(int[] A) {
+
+    Stack<Integer> CL = new Stack<>();
+    int n = A.length;
+    int[] result = new int[n];
+    for (int i = 0; i < n; i++) {
+
+      while (!CL.isEmpty() && A[CL.peek()] <= A[i]) {
+        CL.pop();
+      }
+
+      if (CL.isEmpty()) {
+        result[i] = -1;
+      } else {
+        result[i] = CL.peek();
+      }
+
+      CL.push(i);
+    }
+    return result;
+  }
+
+  private int[] getNGR(int[] A) {
+
+    Stack<Integer> CL = new Stack<>();
+    int n = A.length;
+    int[] result = new int[n];
+    for (int i = n - 1; i >= 0; i--) {
+
+      while (!CL.isEmpty() && A[CL.peek()] <= A[i]) {
+        CL.pop();
+      }
+
+      if (CL.isEmpty()) {
+        result[i] = -1;
+      } else {
+        result[i] = CL.peek();
+      }
+
+      CL.push(i);
+    }
+    return result;
+  }
+}
+
