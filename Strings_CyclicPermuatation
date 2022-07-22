@@ -1,0 +1,39 @@
+/* Given two binary strings A and B, count how many cyclic shift of B when taken XOR with A give 0.
+
+NOTE: If there is a string, S0, S1, ... Sn-1 , then it is a cyclic shift is of the form Sk, Sk+1, ... Sn-1, S0, S1, ... Sk-1 where k can be any integer from 0 to N-1.
+*/
+
+public class Solution {
+    public int solve(String A, String B) {
+
+    String T = A + "@" + B + B.substring(0, B.length()-1);
+    int[] lps = generateLPS(T);
+
+    int len = T.length();
+    int count= 0;
+    for(int i = 0; i < len; i++){
+      if(lps[i] == A.length())
+        count++;
+        
+    }
+    return count;
+  }
+
+  private int[] generateLPS(String s) {
+    int n = s.length();
+    int[] lps = new int[n];
+
+    for (int i = 1; i < n; i++) {
+      int x = lps[i - 1];
+      while (s.charAt(x) != s.charAt(i)) {
+        if (x == 0) {
+          x = -1;
+          break;
+        }
+        x = lps[x - 1];
+      }
+      lps[i] = x + 1;
+    }
+    return lps;
+  }
+}
