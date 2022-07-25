@@ -1,0 +1,24 @@
+/* Given N bags, each bag contains Bi chocolates. There is a kid and a magician.
+In a unit of time, the kid can choose any bag i, and eat Bi chocolates from it, then the magician will fill the ith bag with floor(Bi/2) chocolates.
+
+Find the maximum number of chocolates that the kid can eat in A units of time. */
+
+public class Solution {
+    public int nchoc(int A, int[] B) {
+        int len = B.length;
+    int MOD = 1000000007;
+    PriorityQueue<Integer> queue = new PriorityQueue(len, Collections.reverseOrder());
+
+    for (int i = 0; i < len; i++) {
+      queue.add(B[i]);
+    }
+
+    long total = 0;
+    for (int i = 1; i <= A; i++) {
+      int choco = queue.remove();
+      queue.add(choco / 2);
+      total = (total + choco) % MOD;
+    }
+    return (int) total % MOD;
+    }
+}
