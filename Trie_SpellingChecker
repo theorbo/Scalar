@@ -1,0 +1,66 @@
+/* Given an array of words A (dictionary) and another array B (which contain some words).
+
+You have to return the binary array (of length |B|) as the answer where 1 denotes that the word is present in the dictionary and 0 denotes it is not present.
+
+Formally, for each word in B, you need to return 1 if it is present in Dictionary and 0 if not.
+
+Such problems can be seen in real life when we work on any online editor (like Google Documnet), if the word is not valid it is underlined by a red line.
+
+NOTE: Try to do this in O(n) time complexity. */
+
+public class Solution {
+    public int[] solve(String[] A, String[] B) {
+    TrieNode dummy = new TrieNode(new HashMap<>(), false);
+    for (int i = 0; i < A.length; i++) {
+      insertIntoTrie(dummy, A[i]);
+    }
+
+    int[] result = new int[B.length];
+
+    for (int i = 0; i < B.length; i++) {
+      if (searchIntoTrie(dummy, B[i])) {
+        result[i] = 1;
+      } else {
+        result[i] = 0;
+      }
+    }
+    return result;
+  }
+
+  private TrieNode insertIntoTrie(TrieNode root, String A) {
+
+    TrieNode current = root;
+    for (int i = 0; i < A.length(); i++) {
+      char b = A.charAt(i);
+      if (!current.child.containsKey(b)) {
+        current.child.put(b, new TrieNode(new HashMap<>(), false));
+      }
+      current = current.child.get(b);
+    }
+    current.isEndOfString = true;
+    return root;
+  }
+
+  private boolean searchIntoTrie(TrieNode root, String term) {
+    TrieNode current = root;
+    for (int i = 0; i < term.length(); i++) {
+      char b = term.charAt(i);
+      if (!current.child.containsKey(b)) {
+        return false;
+      }
+      current = current.child.get(b);
+    }
+
+    return current.isEndOfString;
+  }
+
+  class TrieNode {
+    Map<Character, TrieNode> child;
+    boolean isEndOfString;
+
+    public TrieNode(Map<Character, TrieNode> child, boolean isEndOfString) {
+      this.child = child;
+      this.isEndOfString = isEndOfString;
+    }
+  }
+}
