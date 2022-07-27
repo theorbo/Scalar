@@ -1,0 +1,53 @@
+/* You are given a Binary Tree A with N nodes.
+
+Write a function that returns the size of the largest subtree, which is also a Binary Search Tree (BST).
+
+If the complete Binary Tree is BST, then return the size of the whole tree.*/
+
+/**
+ * Definition for binary tree
+ * class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) {
+ *      val = x;
+ *      left=null;
+ *      right=null;
+ *     }
+ * }
+ */
+public class Solution {
+      public int solve(TreeNode A) {
+    return getAnswer(A, Integer.MIN_VALUE, Integer.MAX_VALUE);
+  }
+
+  private int getAnswer(TreeNode A, int min, int max) {
+    if (isValidBST(A, min, max)) {
+      return countNoOfNodes(A);
+    }
+    return Math.max(getAnswer(A.left, min, max), getAnswer(A.right, min, max));
+  }
+
+  private boolean isValidBST(TreeNode A, int min, int max) {
+
+    if (A == null) {
+      return true;
+    }
+
+    if (A.val < min || A.val > max) {
+      return false;
+    }
+
+    return isValidBST(A.left, min, A.val - 1) && isValidBST(A.right, A.val + 1, max);
+  }
+
+  private int countNoOfNodes(TreeNode A) {
+
+    if (A == null) {
+      return 0;
+    }
+
+    return 1 + countNoOfNodes(A.left) + countNoOfNodes(A.right);
+  }
+}
