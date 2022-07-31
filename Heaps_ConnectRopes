@@ -1,0 +1,26 @@
+/* You are given an array A of integers that represent the lengths of ropes.
+
+You need to connect these ropes into one rope. The cost of joining two ropes equals the sum of their lengths.
+
+Find and return the minimum cost to connect these ropes into one rope.*/
+
+
+public class Solution {
+    public int solve(int[] A) {
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
+
+    for (int value : A) {
+      priorityQueue.add(value);
+    }
+
+    int sum = 0;
+    while (!priorityQueue.isEmpty() && priorityQueue.size() != 1) {
+      int ele1 = priorityQueue.poll();
+      int ele2 = priorityQueue.poll();
+
+      sum += ele1 + ele2;
+      priorityQueue.add(ele1 + ele2);
+    }
+    return sum;
+    }
+}
