@@ -1,0 +1,50 @@
+/* Job Sequencing Algorithm. 
+Given two arrays, A and B of size N. A[i] represents the time by which you can buy the ith car without paying any money.
+
+B[i] represents the profit you can earn by buying the ith car. It takes 1 minute to buy a car, so you can only buy the ith car when the current time <= A[i] - 1.
+
+Your task is to find the maximum profit one can earn by buying cars considering that you can only buy one car at a time. */
+
+public class Solution {
+    public int solve(int[] A, int[] B) {
+        List<Job> jobs = new ArrayList<>();
+    int n = A.length;
+    long MOD = 1000000007;
+    for (int i = 0; i < n; i++) {
+      Job job = new Job(i, B[i], A[i] - 1);
+      jobs.add(job);
+    }
+
+    jobs.sort((o1, o2) -> o1.deadline - o2.deadline);
+
+    int time = 0;
+    long result = 0l;
+    PriorityQueue<Job> queue = new PriorityQueue<>(n, (o1, o2) -> o1.profit - o2.profit);
+
+    for (Job job : jobs) {
+      queue.add(job);
+      if (job.deadline < time) {
+        queue.poll();
+      } else {
+        time++;
+      }
+    }
+
+    while (!queue.isEmpty()) {
+      result = (result % MOD + queue.poll().profit % MOD) % MOD;
+    }
+    return (int) (result % MOD);
+    }
+
+    class Job {
+    int jobId;
+    int profit;
+    int deadline;
+
+    public Job(int jobId, int profit, int deadline) {
+      this.jobId = jobId;
+      this.profit = profit;
+      this.deadline = deadline;
+    }
+  }
+}
