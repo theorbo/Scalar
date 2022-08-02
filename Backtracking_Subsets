@@ -1,0 +1,24 @@
+/* Given a set of distinct integers A, return all possible subsets. */
+
+
+public class Solution {
+    ArrayList<ArrayList<Integer>> result;
+
+  public ArrayList<ArrayList<Integer>> subsets(ArrayList<Integer> A) {
+    Collections.sort(A);
+    result = new ArrayList<>();
+    result.add(new ArrayList<>());
+    generateSubsets(A, 0, new ArrayList<>());
+    return  result;
+  }
+  void generateSubsets(ArrayList<Integer> A, int idx, ArrayList<Integer> temp){
+      if (idx >= A.size()) {
+      return;
+    }
+    temp.add(A.get(idx));
+    result.add(new ArrayList<>(temp));
+    generateSubsets(A, idx + 1, temp);
+    temp.remove(temp.size() - 1);
+    generateSubsets(A, idx + 1, temp);
+  }
+}
