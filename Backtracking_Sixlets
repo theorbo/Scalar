@@ -1,0 +1,35 @@
+/* Given a array of integers A of size N and an integer B.
+
+Return number of non-empty subsequences of A of size B having sum <= 1000.
+*/
+
+public class Solution {
+    int count = 0;
+
+  public int solve(int[] A, int B) {
+    count = 0;
+    calculate(A, B, new ArrayList<>(), 0, 0);
+    return count;
+  }
+
+  private void calculate(int[] A, int B, ArrayList<Integer> temp, int indx, int currSum) {
+
+    if (temp.size() == B) {
+      if (currSum <= 1000) {
+        count++;
+      }
+      return;
+    }
+
+    if (indx >= A.length) {
+      return;
+    }
+
+    currSum += A[indx];
+    temp.add(A[indx]);
+    calculate(A, B, temp, indx + 1, currSum);
+    temp.remove(temp.size()-1);
+    currSum -= A[indx];
+    calculate(A, B, temp, indx + 1, currSum);
+  }
+}
