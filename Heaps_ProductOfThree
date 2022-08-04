@@ -1,0 +1,32 @@
+/* Given an integer array A of size N.
+
+You have to find the product of the three largest integers in array A from range 1 to i, where i goes from 1 to N.
+
+Return an array B where B[i] is the product of the largest 3 integers in range 1 to i in array A. If i < 3, then the integer at index i in B should be -1.
+*/
+
+public class Solution {
+    public int[] solve(int[] A) {
+         PriorityQueue<Integer> priorityQueue = new PriorityQueue(3, Collections.reverseOrder());
+    int n = A.length;
+    int[] result = new int[n];
+
+    for (int i = 0; i < 2; i++) {
+      result[i] = -1;
+      priorityQueue.add(A[i]);
+    }
+
+    for (int i = 2; i < n; i++) {
+      priorityQueue.add(A[i]);
+      int ele1 = priorityQueue.poll();
+      int ele2 = priorityQueue.poll();
+      int ele3 = priorityQueue.poll();
+      result[i] = ele1 * ele2 * ele3;
+      priorityQueue.add(ele1);
+      priorityQueue.add(ele2);
+      priorityQueue.add(ele3);
+    }
+    return result;
+
+    }
+}
