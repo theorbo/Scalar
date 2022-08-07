@@ -1,0 +1,52 @@
+/* Given a grid A, a rat is at position (1, 1). He wants to go to the position (n, n) where n is size of the square matrix A.
+
+1 represents a traversable cell and 0 represents a non-traversable cell. Rat can only move right or down.
+
+Return a path that the rat can take. */
+
+public class Solution {
+   int N, M;
+
+
+  public ArrayList<ArrayList<Integer>> solve(ArrayList<ArrayList<Integer>> A) {
+    N = A.size() - 1;
+    M = A.get(0).size() - 1;
+
+
+    ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+    for (int i = 0; i <= N; i++) {
+      ArrayList<Integer> temp1 = new ArrayList<>();
+      for (int j = 0; j <= M; j++) {
+        temp1.add(0);
+      }
+      result.add(temp1);
+    }
+
+    ratInAMaze(A, 0, 0, result);
+
+    return result;
+  }
+
+  private boolean ratInAMaze(ArrayList<ArrayList<Integer>> A, int row, int column, ArrayList<ArrayList<Integer>> path) {
+
+    if (row == N && column == M+1) {
+      return true;
+    }
+
+    if (isSafe(A, row, column)) {
+      path.get(row).set(column, 1);
+      if (ratInAMaze(A, row, column + 1, path) || ratInAMaze(A, row + 1, column, path)) {
+        return true;
+      }
+      path.get(row).set(column, 0);
+    }
+    return false;
+  }
+
+  private boolean isSafe(ArrayList<ArrayList<Integer>> A, int row, int column) {
+    if (row >= 0 && row <= N && column >= 0 && column <= M) {
+      return A.get(row).get(column) != 0;
+    }
+    return false;
+  }
+}
