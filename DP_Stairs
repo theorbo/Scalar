@@ -1,0 +1,53 @@
+/* You are climbing a staircase and it takes A steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+Return the number of distinct ways modulo 1000000007 */
+
+//Iterative Approach.
+public class Solution {
+    public int climbStairs(int A) {
+        int MOD = 1000000007;
+    int val1 = 1, val2 = 2;
+    if (A <= 2) {
+      return A;
+    }
+    int val = -1;
+    for (int i = 3; i <= A; i++) {
+      val = (val1 + val2)%MOD;
+      val1 = val2;
+      val2 = val;
+    }
+    return val%MOD;
+    }
+}
+
+
+//Recursive Approach
+
+public class Solution {
+    int[] dp;
+  int MOD = 1000000007;
+
+  public int climbStairs(int A) {
+    dp = new int[A + 1];
+
+    for (int i = 0; i <= A; i++) {
+      dp[i] = -1;
+    }
+    return getTotalSteps(A);
+  }
+
+  private int getTotalSteps(int A) {
+    if (A <= 2) {
+      return A;
+    }
+
+    if (dp[A] != -1) {
+      return dp[A];
+    }
+
+    dp[A] = (getTotalSteps(A - 1) + getTotalSteps(A - 2)) % MOD;
+    return dp[A];
+  }
+}
