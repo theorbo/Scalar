@@ -1,0 +1,36 @@
+/* Given two strings A and B, find the minimum number of steps required to convert A to B. (each operation is counted as 1 step.)
+
+You have the following 3 operations permitted on a word:
+
+Insert a character
+Delete a character
+Replace a character
+
+*/
+
+
+public class Solution {
+    public int minDistance(String A, String B) {
+    return getDistance(A, B, A.length(), B.length());
+  }
+
+  private int getDistance(String A, String B, int m, int n) {
+    int[][] dp = new int[m + 1][n + 1];
+
+    for (int i = 0; i <= m; i++) {
+      for (int j = 0; j <= n; j++) {
+        if (i == 0 ) {
+          dp[i][j] = j;
+        } else if(j == 0){
+            dp[i][j] = i;
+        }
+        else if (A.charAt(i - 1) == B.charAt(j - 1)) {
+          dp[i][j] = dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], Math.min(dp[i - 1][j], dp[i][j - 1]));
+        }
+      }
+    }
+    return dp[m][n];
+  }
+}
