@@ -1,0 +1,101 @@
+/* Given a matrix of integers A of size N x M consisting of 0, 1 or 2.
+
+Each cell can have three values:
+
+The value 0 representing an empty cell.
+
+The value 1 representing a fresh orange.
+
+The value 2 representing a rotten orange.
+
+Every minute, any fresh orange that is adjacent (Left, Right, Top, or Bottom) to a rotten orange becomes rotten. Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1 instead.
+
+Note: Your solution will run on multiple test cases. If you are using global variables, make sure to clear them.*/
+
+public class Solution {
+   public int solve(int[][] A) {
+    int m = A.length;
+    int n = A[0].length;
+    List<Pair> rottenOrangesPosition = new ArrayList<>();
+
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (A[i][j] == 2) {
+          rottenOrangesPosition.add(new Pair(i, j));
+        }
+      }
+    }
+
+    return getTimeBFS(A, rottenOrangesPosition);
+  }
+
+
+  private int getTimeBFS(int[][] A, List<Pair> rottenOrangesPosition) {
+    int m = A.length;
+    int n = A[0].length;
+
+    Queue<Pair> queue = new LinkedList<>();
+    boolean[][] visited = new boolean[m][n];
+
+    int[] dx = {-1, 1, 0, 0};
+    int[] dy = {0, 0, 1, -1};
+
+    queue.addAll(rottenOrangesPosition);
+
+    int time = 0;
+    while (!queue.isEmpty()) {
+      int size = queue.size();
+      boolean isRotten = false;
+      while (size > 0) {
+        Pair pair = queue.poll();
+
+        for (int k = 0; k < 4; k++) {
+          int xI = pair.x + dx[k];
+          int xJ = pair.y + dy[k];
+          if (isRotten(xI, xJ, A, visited)) {
+            queue.add(new Pair(xI, xJ));
+            visited[xI][xJ] = true;
+            A[xI][xJ] = 2;
+            isRotten = true;
+          }
+        }
+        size--;
+      }
+      if (isRotten) {
+        time++;
+      }
+    }
+
+    return isAllRotten(A) ? time : -1;
+  }
+
+  private boolean isAllRotten(int[][] rottenOrangesPosition) {
+    int m = rottenOrangesPosition.length;
+    int n = rottenOrangesPosition[0].length;
+
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (rottenOrangesPosition[i][j] == 1) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  private boolean isRotten(int x, int y, int[][] rottenOrangesPosition, boolean[][] visited) {
+    int m = rottenOrangesPosition.length;
+    int n = rottenOrangesPosition[0].length;
+    return 0 <= x && x < m && 0 <= y && y < n && !visited[x][y] && rottenOrangesPosition[x][y] == 1;
+  }
+
+  class Pair {
+    int x;
+    int y;
+
+    public Pair(int x, int y) {
+      this.x = x;
+      this.y = y;
+    }
+  }
+}
