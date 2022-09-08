@@ -1,0 +1,78 @@
+/* Given a undirected graph having A nodes. A matrix B of size M x 2 is given which represents the edges such that there is an edge between B[i][0] and B[i][1].
+
+Find whether the given graph is bipartite or not.
+
+A graph is bipartite if we can split it's set of nodes into two independent subsets A and B such that every edge in the graph has one node in A and another node in B
+
+Note:
+
+There are no self-loops in the graph.
+
+No multiple edges between two pair of vertices.
+
+The graph may or may not be connected.
+
+Nodes are Numbered from 0 to A-1.
+
+Your solution will run on multiple testcases. If you are using global variables make sure to clear them. */
+
+
+public class Solution {
+    public int solve(int A, int[][] B) {
+    List<List<Integer>> graph = createGraph(A, B);
+    boolean[] visited = new boolean[A];
+    int[] colour = new int[A];
+
+    boolean ans = true;
+        for(int i = 0 ; i < A ; ++i){
+            if(!visited[i]){ //Checking for each disconnected component 
+                ans = ans && bfs(graph, visited, colour, i);
+                if(!ans) return 0;
+            }
+        }
+        return ans ? 1 : 0;
+  }
+
+  private boolean bfs(List<List<Integer>> graph, boolean[] visited, int[] colour, int source) {
+    
+    Queue<Integer> queue = new LinkedList<>();
+    int col = 0;
+
+    queue.add(source);
+    colour[source] = col;
+    visited[source] = true;
+    boolean ans = true;
+
+    while (!queue.isEmpty()) {
+      int ele = queue.poll();
+
+      for (int v : graph.get(ele)) {
+        if (visited[v]) {
+          if (colour[v] == colour[ele]) {
+            ans = false;
+          }
+        } else {
+          visited[v] = true;
+          colour[v] = colour[ele] ^ 1;
+          queue.add(v);
+        }
+      }
+    }
+
+    return ans;
+  }
+
+  private List<List<Integer>> createGraph(int A, int[][] B) {
+    List<List<Integer>> graph = new ArrayList<>(A);
+    for (int i = 0; i < A; i++) {
+      graph.add(new ArrayList<>());
+    }
+
+    for (int[] ints : B) {
+      graph.get(ints[0]).add(ints[1]);
+      graph.get(ints[1]).add(ints[0]);
+    }
+    return graph;
+  }
+
+}
