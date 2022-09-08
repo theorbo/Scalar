@@ -1,0 +1,70 @@
+/* A country consist of N cities connected by N - 1 roads. King of that country want to construct maximum number of roads such that the new country formed remains bipartite country.
+
+Bipartite country is a country, whose cities can be partitioned into 2 sets in such a way, that for each road (u, v) that belongs to the country, u and v belong to different sets. Also, there should be no multiple roads between two cities and no self loops.
+
+Return the maximum number of roads king can construct. Since the answer could be large return answer % 109 + 7.
+
+NOTE: All cities can be visited from any city.*/
+
+public class Solution {
+    public static final int MOD = 1000000007;
+
+  public int solve(int A, int[][] B) {
+    List<List<Integer>> graph = createGraph(A, B);
+    boolean[] visited = new boolean[A + 1];
+    int[] colour = new int[A + 1];
+    return bfs(graph, visited, colour, 1);
+  }
+
+  private int bfs(List<List<Integer>> graph, boolean[] visited, int[] colour, int source) {
+
+
+    Queue<Integer> queue = new LinkedList<>();
+    long count0 = 0, count1 = 0;
+    int col = 0;
+    boolean ans = true;
+
+    queue.add(source);
+    colour[source] = col;
+
+    while (!queue.isEmpty()) {
+      int ele = queue.poll();
+
+      for (int v : graph.get(ele)) {
+        if (visited[v]) {
+          if (colour[v] == colour[ele]) {
+            ans = false;
+          }
+        } else {
+          visited[v] = true;
+          colour[v] = colour[ele] ^ 1;
+          if (colour[v] == 1) {
+            count1++;
+          } else {
+            count0++;
+          }
+          queue.add(v);
+        }
+      }
+    }
+
+    if (!ans) {
+      return 0;
+    }
+
+    return (int)Math.max(0,(count0 * count1)%MOD - (colour.length - 2))%MOD;
+  }
+
+  private List<List<Integer>> createGraph(int A, int[][] B) {
+    List<List<Integer>> graph = new ArrayList<>(A);
+    for (int i = 0; i <= A; i++) {
+      graph.add(new ArrayList<>());
+    }
+
+    for (int i = 0; i < B.length; i++) {
+      graph.get(B[i][0]).add(B[i][1]);
+      graph.get(B[i][1]).add(B[i][0]);
+    }
+    return graph;
+  }
+}
