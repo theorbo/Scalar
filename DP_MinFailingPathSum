@@ -1,0 +1,42 @@
+/* Given a square grid of integers A, a falling path with non-zero shifts is a choice of exactly one element from each row of A, such that no two elements chosen in adjacent rows are in the same column.
+
+Return the minimum sum of a falling path with non-zero shifts.*/
+
+public class Solution {
+    public int solve(int[][] A) {
+       int i, j, ans = Integer.MAX_VALUE;
+
+    int m = A.length;
+    if (m == 1) {
+      return A[0][0];
+    }
+    int[][] dp = new int[m + 1][m + 1];
+
+    for (i = 0; i <= m; i++) {
+      for (j = 0; j <= m; j++) {
+        dp[i][j] = Integer.MAX_VALUE;
+      }
+    }
+
+    for (i = 1; i <= m; i++) {
+      for (j = 1; j <= m; j++) {
+        if (i == 1) {
+          dp[i][j] = A[i - 1][j - 1];
+        } else {
+          for (int k = 1; k <= m; k++) {
+            if (j != k) {
+              dp[i][j] = Math.min(dp[i][j], A[i - 1][j - 1] + dp[i - 1][k]);
+            }
+          }
+        }
+
+      }
+    }
+
+    for(i = 1; i <= m ;i++){
+      ans = Math.min(ans, dp[m][i]);
+    }
+    //System.out.println(ans);
+    return ans;
+    }
+}
